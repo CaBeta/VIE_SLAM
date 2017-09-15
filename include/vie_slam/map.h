@@ -1,3 +1,10 @@
+#ifndef MAP_H_
+#define MAP_H_
+
+#include "vie_slam/common.h"
+#include "vie_slam/frame.h"
+#include "vie_slam/mappoint.h"
+
 namespace vie_slam {
 
 class Map {
@@ -17,3 +24,5 @@ public:
 };
 
 } /* vie_slam */
+
+#endif

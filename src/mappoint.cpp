@@ -1,3 +1,5 @@
+#include "vie_slam/mappoint.h"
+
 namespace vie_slam {
 
 MapPoint::MapPoint()
@@ -11,10 +13,14 @@ MapPoint::MapPoint(long id,Vector3d position,Vector3d norm)
       correct_times_(0)
     {}
 
+MapPoint::~MapPoint(){
+
+}
+
 MapPoint::Ptr MapPoint::createMapPoint(){
   static long factory_id = 0;
   return MapPoint::Ptr(
-    new MapPoint( factory_id++, Vector3d(0,0,0), Vector3d(0,0,0)
+    new MapPoint( factory_id++, Vector3d(0,0,0), Vector3d(0,0,0) )
   );
 }
 

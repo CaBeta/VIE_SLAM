@@ -1,15 +1,24 @@
 #include "vie_slam/camera.h"
+#include "vie_slam/config.h"
 
 namespace vie_slam {
 
 Camera::Camera(){
-  /*pass*/
+  fx_ = Config::get<float>("camera.fx");
+  fy_ = Config::get<float>("camera.fy");
+  cx_ = Config::get<float>("camera.cx");
+  cy_ = Config::get<float>("camera.cy");
+  depth_scale_ = Config::get<float>("camera.depth_scale");
 }
+Camera::~Camera(){
+
+}
+
 Vector3d Camera::World2Camera(const Vector3d& p_w,const SE3& T_c_w){
-  return T_c_w*p_w;
+  return T_c_w * p_w;
 }
 Vector3d Camera::Camera2World(const Vector3d& p_c,const SE3& T_c_w){
-  return T_c_w.inverse()*p_c;
+  return T_c_w.inverse() * p_c;
 }
 Vector2d Camera::Camera2Pixel(const Vector3d& p_c){
   return Vector2d(

@@ -1,3 +1,12 @@
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/calib3d/calib3d.hpp>
+#include <algorithm>
+#include <boost/timer.hpp>
+
+#include "vie_slam/config.h"
+#include "vie_slam/visual_odometry.h"
+
 namespace vie_slam {
 
 VisualOdometry::VisualOdometry()
@@ -12,7 +21,7 @@ VisualOdometry::VisualOdometry()
       min_inliers_ = Config::get<int>("min_inliers");
       keyframe_min_rotation = Config::get<double>("keyframe_min_rotation");
       keyframe_min_trans = Config::get<double>("keyframe_min_trans");
-      orb_ = cv::ORB::create( num_of_features_, scale_factor_, level_pyramid_ );
+      orb_ = cv::ORB::create( num_features_, scale_factor_, level_pyramid_ );
     }
 
 VisualOdometry::~VisualOdometry(){
@@ -106,7 +115,7 @@ void VisualOdometry::setRef3DPoints(){
   for ( size_t i=0; i<keypoints_curr_.size(); i++ ) {
     double d = ref_->findDepth(keypoints_curr_[i]);
     if (d > 0){
-      Vector3d p_cam = ref_->camera_->pixel2camera(
+      Vector3d p_cam = ref_->camera_->Pixel2Camera(
         Vector2d(keypoints_curr_[i].pt.x, keypoints_curr_[i].pt.y), d
       );
       points_3d_ref_.push_back( cv::Point3f( p_cam(0,0), p_cam(1,0), p_cam(2,0) ));
@@ -163,7 +172,7 @@ bool VisualOdometry::checkKeyFrame(){
   Sophus::Vector6d d = T_curr_ref_estimated_.log();
   Vector3d trans = d.head<3>();
   Vector3d rot = d.tail<3>();
-  if ( rot.norm() >key_frame_min_rot || trans.norm() >key_frame_min_trans )
+  if ( rot.norm() >keyframe_min_rotation || trans.norm() >keyframe_min_trans )
     return true;
   return false;
 }

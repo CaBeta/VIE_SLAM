@@ -1,3 +1,5 @@
+#include "vie_slam/config.h"
+
 namespace vie_slam {
 
 void Config::setParameterFile(const std::string& filename) {

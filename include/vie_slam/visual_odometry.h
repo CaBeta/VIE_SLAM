@@ -1,8 +1,16 @@
+#ifndef VISUALODOMETRY_H_
+#define VISUALODOMETRY_H_
+
+#include "vie_slam/common.h"
+#include "vie_slam/map.h"
+
+#include <opencv2/features2d/features2d.hpp>
+
 namespace vie_slam {
 
 class VisualOdometry {
 private:
-  VisualOdometryState state_;
+
   Map::Ptr map_;
   Frame::Ptr ref_;
   Frame::Ptr curr_;
@@ -36,8 +44,9 @@ public:
     OK = 0,
     LOST
   };
+  VisualOdometryState state_;
 
-  VisualOdometry ()；
+  VisualOdometry();
   virtual ~VisualOdometry ();
 
   bool addFrame(Frame::Ptr frame);
@@ -54,4 +63,6 @@ protected:
   bool checkKeyFrame();
 };
 
-} /* vie_slam *
+} /* vie_slam */
+
+#endif

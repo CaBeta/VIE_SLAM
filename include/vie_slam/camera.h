@@ -1,14 +1,12 @@
 #ifndef VIESLAM_CAMERA_H_
 #define VIESLAM_CAMERA_H_
 
-#include "common/common_include.h"
+#include "vie_slam/common.h"
 
 namespace vie_slam {
 
 class Camera {
 private:
-  //相机内参
-  float fx_,fy_,cx_,cy_,depth_scale_;
 
 public:
   typedef std::shared_ptr<Camera> Ptr;
@@ -22,10 +20,14 @@ public:
   //坐标系变换 世界坐标系 相机坐标系 图像坐标系 之间的转换
   Vector3d World2Camera(const Vector3d& p_w,const SE3& T_c_w);
   Vector3d Camera2World(const Vector3d& p_c,const SE3& T_c_w);
-  Vector3d Camera2Pixel(const Vector3d& p_c);
+  Vector2d Camera2Pixel(const Vector3d& p_c);
   Vector3d Pixel2Camera(const Vector2d& p_p,double depth=1);
   Vector3d Pixel2World(const Vector2d& p_p,const SE3& T_c_w,double depth=1);
-  Vector3d World2Pixel(const Vector3d& p_w,const SE3& T_c_w);
+  Vector2d World2Pixel(const Vector3d& p_w,const SE3& T_c_w);
+
+  float depth_scale_;
+  //相机内参
+  float fx_,fy_,cx_,cy_;
 };
 
 } /* vie_slam */

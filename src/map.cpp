@@ -1,4 +1,10 @@
+#include "vie_slam/map.h"
+
 namespace vie_slam {
+
+Map::~Map(){
+
+}
 
 void Map::insertKeyFrame ( Frame::Ptr frame ){
   cout<<"Key frame size = "<<keyframes_.size()<<endl;

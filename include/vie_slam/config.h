@@ -1,3 +1,8 @@
+#ifndef CONFIG_H_
+#define CONFIG_H_
+
+#include "vie_slam/common.h"
+
 namespace vie_slam {
 
 class Config {
@@ -10,7 +15,7 @@ private:
 public:
   virtual ~Config ();
 
-  static void setParameterFile(const std::string& filename); 
+  static void setParameterFile(const std::string& filename);
 
   template<typename T>
   static T get(const std::string& key){
@@ -19,3 +24,5 @@ public:
 };
 
 } /* vie_slam */
+
+#endif
