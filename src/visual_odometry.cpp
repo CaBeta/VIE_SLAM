@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <boost/timer.hpp>
 
+#include "gms/gms_matcher.h"
 #include "vie_slam/config.h"
 #include "vie_slam/visual_odometry.h"
 
@@ -13,6 +14,9 @@ VisualOdometry::VisualOdometry()
     : state_ (INITIALIZING), ref_(nullptr), curr_(nullptr), map_(new Map),
       num_lost_(0),num_inliers_(0)
     {
+      // 注意：这里写错是没有自动检查的
+      // 如果没有找到对应的key 不会进行赋值 也不会报错
+      // 应当做检查 或者在构造时设默认值
       num_features_ = Config::get<int>("number_of_features");
       scale_factor_ = Config::get<double>("scale_factor");
       level_pyramid_ = Config::get<int>("level_pyramid");
@@ -77,6 +81,9 @@ bool VisualOdometry::addFrame(Frame::Ptr frame){
 }
 
 void VisualOdometry::extractKeyPoints(){
+  if (keypoints_curr_) {
+    keypoints_ref_ = keypoints_curr_;
+  }
   orb_->detect ( curr_->color_, keypoints_curr_ );
 }
 
@@ -89,22 +96,21 @@ void VisualOdometry::featureMatching(){
   vector<cv::DMatch> matches;
   cv::BFMatcher matcher ( cv::NORM_HAMMING );
   matcher.match ( descriptors_ref_, descriptors_curr_, matches );
-  // select the best matches
-  float min_dis = std::min_element(
-    matches.begin(), matches.end(),
-    [] ( const cv::DMatch& m1, const cv::DMatch& m2 )
-    {
-      return m1.distance < m2.distance;
-    }
-  )->distance;
+  // GMS部分
+  int num_inliers = 0;
+	std::vector<bool> vbInliers;
+	gms_matcher gms(keypoints_ref_,ref_->color_.size(),
+                  keypoints_curr_,curr_->color_.size(), matches);
+	num_inliers = gms.GetInlierMask(vbInliers, false, false);
+
+	cout << "Get total " << num_inliers << " matches." << endl;
 
   feature_matches_.clear();
-
-  for ( cv::DMatch& m : matches ) {
-    if ( m.distance < max<float>( min_dis * match_ratio_, 30.0 ) ) {
-      feature_matches_.push_back(m);
-    }
-  }
+  for (size_t i = 0; i < vbInliers.size(); ++i){
+		if (vbInliers[i] == true){
+			feature_matches_.push_back(matches[i]);
+		}
+	}
   std::cout<<"good matches: "<<feature_matches_.size()<<std::endl;
 }
 

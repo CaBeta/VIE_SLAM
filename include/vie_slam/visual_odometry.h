@@ -18,6 +18,7 @@ private:
   cv::Ptr<cv::ORB> orb_;
   std::vector<cv::Point3f> points_3d_ref_;
   std::vector<cv::KeyPoint> keypoints_curr_;
+  std::vector<cv::KeyPoint> keypoints_ref_;
   Mat descriptors_curr_;
   Mat descriptors_ref_;
   std::vector<cv::DMatch> feature_matches_;
