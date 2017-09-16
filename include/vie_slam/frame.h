@@ -5,7 +5,7 @@
 #include "vie_slam/camera.h"
 
 namespace vie_slam {
-
+class MapPoint;
 class Frame {
 private:
 
@@ -16,7 +16,7 @@ public:
   Frame ();
   Frame (long id,double time_stamp=0,SE3 T_c_w=SE3(),Camera::Ptr camera=nullptr,
          Mat color=Mat(),Mat depth=Mat());
-  virtual ~Frame ();
+  ~Frame ();
   // 构建一个帧
   static Frame::Ptr createFrame();
   // 获得特征点对应的深度

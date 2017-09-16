@@ -1,8 +1,9 @@
 #include "vie_slam/frame.h"
 
 namespace vie_slam {
-  
-Frame::Frame(){
+
+Frame::Frame()
+    : id_(-1), time_stamp_(-1), camera_(nullptr){
 
 }
 

@@ -51,4 +51,5 @@ SET(CMAKE_MAKEFILE_PRODUCTS
 SET(CMAKE_DEPEND_INFO_FILES
   "src/CMakeFiles/vie_slam.dir/DependInfo.cmake"
   "test/CMakeFiles/run_vo.dir/DependInfo.cmake"
+  "test/CMakeFiles/test.dir/DependInfo.cmake"
   )

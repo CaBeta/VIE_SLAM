@@ -13,14 +13,14 @@ VisualOdometry::VisualOdometry()
     : state_ (INITIALIZING), ref_(nullptr), curr_(nullptr), map_(new Map),
       num_lost_(0),num_inliers_(0)
     {
-      num_features_ = Config::get<int>("num_features");
+      num_features_ = Config::get<int>("number_of_features");
       scale_factor_ = Config::get<double>("scale_factor");
       level_pyramid_ = Config::get<int>("level_pyramid");
       match_ratio_ = Config::get<float>("match_ratio");
-      max_num_lost_ = Config::get<int>("max_num_lost");
+      max_num_lost_ = Config::get<float>("max_num_lost");
       min_inliers_ = Config::get<int>("min_inliers");
       keyframe_min_rotation = Config::get<double>("keyframe_min_rotation");
-      keyframe_min_trans = Config::get<double>("keyframe_min_trans");
+      keyframe_min_trans = Config::get<double>("keyframe_min_translation");
       orb_ = cv::ORB::create( num_features_, scale_factor_, level_pyramid_ );
     }
 
@@ -34,6 +34,7 @@ bool VisualOdometry::addFrame(Frame::Ptr frame){
     {
       state_ = OK;
       curr_ = ref_ = frame;
+      map_->insertKeyFrame ( frame );
       extractKeyPoints();
       computeDescriptors();
       // 计算参考帧中特征点的3d位置
@@ -66,7 +67,7 @@ bool VisualOdometry::addFrame(Frame::Ptr frame){
     }
     case LOST:
     {
-      std::cout << "VisualOdometry has lost." << '\n';
+      std::cout << "Visual Odometry has lost." << '\n';
       break;
     }
     default:

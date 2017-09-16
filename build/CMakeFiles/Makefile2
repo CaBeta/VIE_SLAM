@@ -74,7 +74,7 @@ src/preinstall:
 src/CMakeFiles/vie_slam.dir/all:
 	$(MAKE) -f src/CMakeFiles/vie_slam.dir/build.make src/CMakeFiles/vie_slam.dir/depend
 	$(MAKE) -f src/CMakeFiles/vie_slam.dir/build.make src/CMakeFiles/vie_slam.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/carpon/VIE_SLAM/build/CMakeFiles  2 3 4 5 6 7
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/carpon/VIE_SLAM/build/CMakeFiles  3 4 5 6 7 8
 	@echo "Built target vie_slam"
 .PHONY : src/CMakeFiles/vie_slam.dir/all
 
@@ -107,10 +107,12 @@ clean: src/CMakeFiles/vie_slam.dir/clean
 
 # Convenience name for "all" pass in the directory.
 test/all: test/CMakeFiles/run_vo.dir/all
+test/all: test/CMakeFiles/test.dir/all
 .PHONY : test/all
 
 # Convenience name for "clean" pass in the directory.
 test/clean: test/CMakeFiles/run_vo.dir/clean
+test/clean: test/CMakeFiles/test.dir/clean
 .PHONY : test/clean
 
 # Convenience name for "preinstall" pass in the directory.
@@ -150,6 +152,41 @@ test/CMakeFiles/run_vo.dir/clean:
 
 # clean rule for target.
 clean: test/CMakeFiles/run_vo.dir/clean
+.PHONY : clean
+
+#=============================================================================
+# Target rules for target test/CMakeFiles/test.dir
+
+# All Build rule for target.
+test/CMakeFiles/test.dir/all: src/CMakeFiles/vie_slam.dir/all
+	$(MAKE) -f test/CMakeFiles/test.dir/build.make test/CMakeFiles/test.dir/depend
+	$(MAKE) -f test/CMakeFiles/test.dir/build.make test/CMakeFiles/test.dir/build
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/carpon/VIE_SLAM/build/CMakeFiles  2
+	@echo "Built target test"
+.PHONY : test/CMakeFiles/test.dir/all
+
+# Include target in all.
+all: test/CMakeFiles/test.dir/all
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+test/CMakeFiles/test.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/carpon/VIE_SLAM/build/CMakeFiles 7
+	$(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/test.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/carpon/VIE_SLAM/build/CMakeFiles 0
+.PHONY : test/CMakeFiles/test.dir/rule
+
+# Convenience name for target.
+test: test/CMakeFiles/test.dir/rule
+.PHONY : test
+
+# clean rule for target.
+test/CMakeFiles/test.dir/clean:
+	$(MAKE) -f test/CMakeFiles/test.dir/build.make test/CMakeFiles/test.dir/clean
+.PHONY : test/CMakeFiles/test.dir/clean
+
+# clean rule for target.
+clean: test/CMakeFiles/test.dir/clean
 .PHONY : clean
 
 #=============================================================================
