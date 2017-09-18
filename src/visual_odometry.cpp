@@ -83,7 +83,6 @@ bool VisualOdometry::addFrame(Frame::Ptr frame){
 
 void VisualOdometry::extractKeyPoints(){
   orb_->detect ( curr_->color_, keypoints_curr_ );
-  std::cout << "keypoints_curr_:" << keypoints_curr_.size() << '\n';
 }
 
 void VisualOdometry::computeDescriptors(){
@@ -96,27 +95,13 @@ void VisualOdometry::featureMatching(){
   vector<cv::DMatch> matches;
   cv::BFMatcher matcher ( cv::NORM_HAMMING );
   matcher.match ( descriptors_ref_, descriptors_curr_, matches );
-  std::cout << "matches: "<< matches.size()<< '\n';
 
   // GMS部分
-  // vector<KeyPoint> kp1, kp2;
-	// Mat d1, d2;
-  // vector<DMatch> matches;
-  // cv::Ptr<ORB> orb = ORB::create(3000);
-	// orb->setFastThreshold(0);
-	// orb->detectAndCompute(ref_->color_, Mat(), kp1, d1);
-	// orb->detectAndCompute(curr_->color_, Mat(), kp2, d2);
-  // std::cout << "kp1: "<<kp1.size() << '\n';
-  // std::cout << "kp2: "<<kp2.size() << '\n';
-  // BFMatcher matcher(NORM_HAMMING);
-  // matcher.match(d1, d2, matches);
   int num_inliers = 0;
 	std::vector<bool> vbInliers;
 	gms_matcher gms(keypoints_ref_,ref_->color_.size(),
                   keypoints_curr_,curr_->color_.size(), matches);
 	num_inliers = gms.GetInlierMask(vbInliers, false, false);
-
-	cout << "Get total " << num_inliers << " matches." << endl;
 
   feature_matches_.clear();
   for (size_t i = 0; i < vbInliers.size(); ++i){
@@ -131,6 +116,7 @@ void VisualOdometry::setRef3DPoints(){
   // select the features with depth measurements
   points_3d_ref_.clear();
   descriptors_ref_ = Mat();
+  keypoints_ref_.clear();
 
   for ( size_t i=0; i<keypoints_curr_.size(); i++ ) {
     double d = ref_->findDepth(keypoints_curr_[i]);
@@ -141,9 +127,9 @@ void VisualOdometry::setRef3DPoints(){
       points_3d_ref_.push_back( cv::Point3f( p_cam(0,0), p_cam(1,0), p_cam(2,0) ));
       descriptors_ref_.push_back(descriptors_curr_.row(i));
       keypoints_ref_.push_back(keypoints_curr_[i]);
-      std::cout << "重设keypoint" << '\n';
       // 这里只保留了成功计算深度的点到ref中
       // 为了同步keypoints 在这里也把keypoints重新进行筛选
+      // 注意在push_back的时候要清除掉原来的
     }
   }
 }
