@@ -1,13 +1,14 @@
-#ifndef GMSMATCHER_H_
-#define GMSMATCHER_H_
-
 #include <opencv2/opencv.hpp>
 #include <vector>
 #include <iostream>
 #include <ctime>
+using namespace std;
+using namespace cv;
 
-using cv::Mat;
-using std::pair;
+#ifdef USE_GPU
+	#include <opencv2/cudafeatures2d.hpp>
+	using cuda::GpuMat;
+#endif
 
 #define THRESH_FACTOR 6
 
@@ -49,11 +50,12 @@ const int mRotationPatterns[8][9] = {
 // 5 level scales
 const double mScaleRatios[5] = { 1.0, 1.0 / 2, 1.0 / sqrt(2.0), sqrt(2.0), 2.0 };
 
+
 class gms_matcher
 {
 public:
 	// OpenCV Keypoints & Correspond Image Size & Nearest Neighbor Matches
-	gms_matcher(const std::vector<cv::KeyPoint> &vkp1, const cv::Size size1, const std::vector<cv::KeyPoint> &vkp2, const cv::Size size2, const std::vector<cv::DMatch> &vDMatches)
+	gms_matcher(const vector<KeyPoint> &vkp1, const Size size1, const vector<KeyPoint> &vkp2, const Size size2, const vector<DMatch> &vDMatches)
 	{
 		// Input initialize
 		NormalizePoints(vkp1, size1, mvP1);
@@ -62,7 +64,7 @@ public:
 		ConvertMatches(vDMatches, mvMatches);
 
 		// Grid initialize
-		mGridSizeLeft = cv::Size(20, 20);
+		mGridSizeLeft = Size(20, 20);
 		mGridNumberLeft = mGridSizeLeft.width * mGridSizeLeft.height;
 
 		// Initialize the neihbor of left grid
@@ -71,21 +73,23 @@ public:
 	};
 	~gms_matcher() {};
 
+
 private:
 
 	// Normalized Points
-	std::vector<cv::Point2f> mvP1, mvP2;
+	vector<Point2f> mvP1, mvP2;
 
 	// Matches
-	std::vector<pair<int, int> > mvMatches;
+	vector<pair<int, int> > mvMatches;
 
 	// Number of Matches
 	size_t mNumberMatches;
 
 	// Grid Size
-	cv::Size mGridSizeLeft, mGridSizeRight;
+	Size mGridSizeLeft, mGridSizeRight;
 	int mGridNumberLeft;
 	int mGridNumberRight;
+
 
 	// x	  : left grid idx
 	// y      :  right grid idx
@@ -93,34 +97,35 @@ private:
 	Mat mMotionStatistics;
 
 	//
-	std::vector<int> mNumberPointsInPerCellLeft;
+	vector<int> mNumberPointsInPerCellLeft;
 
 	// Inldex  : grid_idx_left
 	// Value   : grid_idx_right
-	std::vector<int> mCellPairs;
+	vector<int> mCellPairs;
 
 	// Every Matches has a cell-pair
 	// first  : grid_idx_left
 	// second : grid_idx_right
-	std::vector<pair<int, int> > mvMatchPairs;
+	vector<pair<int, int> > mvMatchPairs;
 
 	// Inlier Mask for output
-	std::vector<bool> mvbInlierMask;
+	vector<bool> mvbInlierMask;
 
 	//
 	Mat mGridNeighborLeft;
 	Mat mGridNeighborRight;
 
+
 public:
 
 	// Get Inlier Mask
 	// Return number of inliers
-	int GetInlierMask(std::vector<bool> &vbInliers, bool WithScale = false, bool WithRotation = false);
+	int GetInlierMask(vector<bool> &vbInliers, bool WithScale = false, bool WithRotation = false);
 
 private:
 
 	// Normalize Key Points to Range(0 - 1)
-	void NormalizePoints(const std::vector<cv::KeyPoint> &kp, const cv::Size &size, std::vector<cv::Point2f> &npts) {
+	void NormalizePoints(const vector<KeyPoint> &kp, const Size &size, vector<Point2f> &npts) {
 		const size_t numP = kp.size();
 		const int width   = size.width;
 		const int height  = size.height;
@@ -134,7 +139,7 @@ private:
 	}
 
 	// Convert OpenCV DMatch to Match (pair<int, int>)
-	void ConvertMatches(const std::vector<cv::DMatch> &vDMatches, std::vector<pair<int, int> > &vMatches) {
+	void ConvertMatches(const vector<DMatch> &vDMatches, vector<pair<int, int> > &vMatches) {
 		vMatches.resize(mNumberMatches);
 		for (size_t i = 0; i < mNumberMatches; i++)
 		{
@@ -142,7 +147,7 @@ private:
 		}
 	}
 
-	int GetGridIndexLeft(const cv::Point2f &pt, int type) {
+	int GetGridIndexLeft(const Point2f &pt, int type) {
 		int x = 0, y = 0;
 
 		if (type == 1) {
@@ -174,7 +179,7 @@ private:
 		return x + y * mGridSizeLeft.width;
 	}
 
-	int GetGridIndexRight(const cv::Point2f &pt) {
+	int GetGridIndexRight(const Point2f &pt) {
 		int x = floor(pt.x * mGridSizeRight.width);
 		int y = floor(pt.y * mGridSizeRight.height);
 
@@ -188,8 +193,8 @@ private:
 	void VerifyCellPairs(int RotationType);
 
 	// Get Neighbor 9
-	std::vector<int> GetNB9(const int idx, const cv::Size& GridSize) {
-		std::vector<int> NB9(9, -1);
+	vector<int> GetNB9(const int idx, const Size& GridSize) {
+		vector<int> NB9(9, -1);
 
 		int idx_x = idx % GridSize.width;
 		int idx_y = idx / GridSize.width;
@@ -211,10 +216,10 @@ private:
 	}
 
 	//
-	void InitalizeNiehbors(Mat &neighbor, const cv::Size& GridSize) {
+	void InitalizeNiehbors(Mat &neighbor, const Size& GridSize) {
 		for (int i = 0; i < neighbor.rows; i++)
 		{
-			std::vector<int> NB9 = GetNB9(i, GridSize);
+			vector<int> NB9 = GetNB9(i, GridSize);
 			int *data = neighbor.ptr<int>(i);
 			memcpy(data, &NB9[0], sizeof(int) * 9);
 		}
@@ -237,7 +242,7 @@ private:
 };
 
 
-int gms_matcher::GetInlierMask(std::vector<bool> &vbInliers, bool WithScale, bool WithRotation) {
+int gms_matcher::GetInlierMask(vector<bool> &vbInliers, bool WithScale, bool WithRotation) {
 
 	int max_inlier = 0;
 
@@ -310,8 +315,8 @@ void gms_matcher::AssignMatchPairs(int GridType) {
 
 	for (size_t i = 0; i < mNumberMatches; i++)
 	{
-		cv::Point2f &lp = mvP1[mvMatches[i].first];
-		cv::Point2f &rp = mvP2[mvMatches[i].second];
+		Point2f &lp = mvP1[mvMatches[i].first];
+		Point2f &rp = mvP2[mvMatches[i].second];
 
 		int lgidx = mvMatchPairs[i].first = GetGridIndexLeft(lp, GridType);
 		int rgidx = -1;
@@ -412,43 +417,43 @@ int gms_matcher::run(int RotationType) {
 			}
 		}
 	}
-	int num_inlier = cv::sum(mvbInlierMask)[0];
+	int num_inlier = sum(mvbInlierMask)[0];
 	return num_inlier;
 
 }
 
 // utility
-inline Mat DrawInlier(Mat &src1, Mat &src2, std::vector<cv::KeyPoint> &kpt1, std::vector<cv::KeyPoint> &kpt2, std::vector<cv::DMatch> &inlier, int type) {
-	const int height = std::max(src1.rows, src2.rows);
+inline Mat DrawInlier(Mat &src1, Mat &src2, vector<KeyPoint> &kpt1, vector<KeyPoint> &kpt2, vector<DMatch> &inlier, int type) {
+	const int height = max(src1.rows, src2.rows);
 	const int width = src1.cols + src2.cols;
-	Mat output(height, width, CV_8UC3, cv::Scalar(0, 0, 0));
-	src1.copyTo(output(cv::Rect(0, 0, src1.cols, src1.rows)));
-	src2.copyTo(output(cv::Rect(src1.cols, 0, src2.cols, src2.rows)));
+	Mat output(height, width, CV_8UC3, Scalar(0, 0, 0));
+	src1.copyTo(output(Rect(0, 0, src1.cols, src1.rows)));
+	src2.copyTo(output(Rect(src1.cols, 0, src2.cols, src2.rows)));
 
 	if (type == 1)
 	{
 		for (size_t i = 0; i < inlier.size(); i++)
 		{
-			cv::Point2f left = kpt1[inlier[i].queryIdx].pt;
-			cv::Point2f right = (kpt2[inlier[i].trainIdx].pt + cv::Point2f((float)src1.cols, 0.f));
-			cv::line(output, left, right, cv::Scalar(0, 255, 255));
+			Point2f left = kpt1[inlier[i].queryIdx].pt;
+			Point2f right = (kpt2[inlier[i].trainIdx].pt + Point2f((float)src1.cols, 0.f));
+			line(output, left, right, Scalar(0, 255, 255));
 		}
 	}
 	else if (type == 2)
 	{
 		for (size_t i = 0; i < inlier.size(); i++)
 		{
-			cv::Point2f left = kpt1[inlier[i].queryIdx].pt;
-			cv::Point2f right = (kpt2[inlier[i].trainIdx].pt + cv::Point2f((float)src1.cols, 0.f));
-			cv::line(output, left, right, cv::Scalar(255, 0, 0));
+			Point2f left = kpt1[inlier[i].queryIdx].pt;
+			Point2f right = (kpt2[inlier[i].trainIdx].pt + Point2f((float)src1.cols, 0.f));
+			line(output, left, right, Scalar(255, 0, 0));
 		}
 
 		for (size_t i = 0; i < inlier.size(); i++)
 		{
-			cv::Point2f left = kpt1[inlier[i].queryIdx].pt;
-			cv::Point2f right = (kpt2[inlier[i].trainIdx].pt + cv::Point2f((float)src1.cols, 0.f));
-			cv::circle(output, left, 1, cv::Scalar(0, 255, 255), 2);
-			cv::circle(output, right, 1, cv::Scalar(0, 255, 0), 2);
+			Point2f left = kpt1[inlier[i].queryIdx].pt;
+			Point2f right = (kpt2[inlier[i].trainIdx].pt + Point2f((float)src1.cols, 0.f));
+			circle(output, left, 1, Scalar(0, 255, 255), 2);
+			circle(output, right, 1, Scalar(0, 255, 0), 2);
 		}
 	}
 
@@ -458,7 +463,5 @@ inline Mat DrawInlier(Mat &src1, Mat &src2, std::vector<cv::KeyPoint> &kpt1, std
 inline void imresize(Mat &src, int height) {
 	double ratio = src.rows * 1.0 / height;
 	int width = static_cast<int>(src.cols * 1.0 / ratio);
-	cv::resize(src, src, cv::Size(width, height));
+	resize(src, src, Size(width, height));
 }
-
-#endif

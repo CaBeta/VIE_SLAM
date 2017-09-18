@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <boost/timer.hpp>
 
-#include "gms/gms_matcher.h"
+#include "gms/old_gms.h"
 #include "vie_slam/config.h"
 #include "vie_slam/visual_odometry.h"
 
@@ -25,7 +25,8 @@ VisualOdometry::VisualOdometry()
       min_inliers_ = Config::get<int>("min_inliers");
       keyframe_min_rotation = Config::get<double>("keyframe_min_rotation");
       keyframe_min_trans = Config::get<double>("keyframe_min_translation");
-      orb_ = cv::ORB::create( num_features_, scale_factor_, level_pyramid_ );
+      orb_ = cv::ORB::create( num_features_);//, scale_factor_, level_pyramid_ );
+      orb_->setFastThreshold(0);
     }
 
 VisualOdometry::~VisualOdometry(){
@@ -81,10 +82,8 @@ bool VisualOdometry::addFrame(Frame::Ptr frame){
 }
 
 void VisualOdometry::extractKeyPoints(){
-  if (keypoints_curr_) {
-    keypoints_ref_ = keypoints_curr_;
-  }
   orb_->detect ( curr_->color_, keypoints_curr_ );
+  std::cout << "keypoints_curr_:" << keypoints_curr_.size() << '\n';
 }
 
 void VisualOdometry::computeDescriptors(){
@@ -93,10 +92,24 @@ void VisualOdometry::computeDescriptors(){
 
 void VisualOdometry::featureMatching(){
   // match desp_ref and desp_curr, use OpenCV's brute force match
+
   vector<cv::DMatch> matches;
   cv::BFMatcher matcher ( cv::NORM_HAMMING );
   matcher.match ( descriptors_ref_, descriptors_curr_, matches );
+  std::cout << "matches: "<< matches.size()<< '\n';
+
   // GMS部分
+  // vector<KeyPoint> kp1, kp2;
+	// Mat d1, d2;
+  // vector<DMatch> matches;
+  // cv::Ptr<ORB> orb = ORB::create(3000);
+	// orb->setFastThreshold(0);
+	// orb->detectAndCompute(ref_->color_, Mat(), kp1, d1);
+	// orb->detectAndCompute(curr_->color_, Mat(), kp2, d2);
+  // std::cout << "kp1: "<<kp1.size() << '\n';
+  // std::cout << "kp2: "<<kp2.size() << '\n';
+  // BFMatcher matcher(NORM_HAMMING);
+  // matcher.match(d1, d2, matches);
   int num_inliers = 0;
 	std::vector<bool> vbInliers;
 	gms_matcher gms(keypoints_ref_,ref_->color_.size(),
@@ -127,8 +140,8 @@ void VisualOdometry::setRef3DPoints(){
       );
       points_3d_ref_.push_back( cv::Point3f( p_cam(0,0), p_cam(1,0), p_cam(2,0) ));
       descriptors_ref_.push_back(descriptors_curr_.row(i));
-      // 这里只保留了成功匹配的点到ref中
-      // 可以匹配的特征点会越来越少 过一段时间应该重新提取特征点来补充
+      keypoints_ref_.push_back(keypoints_curr_[i]);
+      // 这里只保留了成功计算深度的点到ref中
     }
   }
 }

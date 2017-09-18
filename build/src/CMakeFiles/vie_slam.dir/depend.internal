@@ -1317,6 +1317,7 @@ src/CMakeFiles/vie_slam.dir/mappoint.cpp.o
  /usr/include/eigen3/Eigen/src/plugins/MatrixCwiseBinaryOps.h
  /usr/include/eigen3/Eigen/src/plugins/MatrixCwiseUnaryOps.h
 src/CMakeFiles/vie_slam.dir/visual_odometry.cpp.o
+ ../include/gms/old_gms.h
  ../include/vie_slam/camera.h
  ../include/vie_slam/common.h
  ../include/vie_slam/config.h

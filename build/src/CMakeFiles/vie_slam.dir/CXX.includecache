@@ -6,6 +6,18 @@
 
 #IncludeRegexTransform: 
 
+../include/gms/old_gms.h
+opencv2/opencv.hpp
+-
+vector
+-
+iostream
+-
+ctime
+-
+opencv2/cudafeatures2d.hpp
+-
+
 ../include/vie_slam/camera.h
 vie_slam/common.h
 ../include/vie_slam/vie_slam/common.h
@@ -91,6 +103,8 @@ algorithm
 -
 boost/timer.hpp
 -
+gms/old_gms.h
+/home/carpon/VIE_SLAM/src/gms/old_gms.h
 vie_slam/config.h
 /home/carpon/VIE_SLAM/src/vie_slam/config.h
 vie_slam/visual_odometry.h
