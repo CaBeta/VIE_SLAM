@@ -141,7 +141,9 @@ void VisualOdometry::setRef3DPoints(){
       points_3d_ref_.push_back( cv::Point3f( p_cam(0,0), p_cam(1,0), p_cam(2,0) ));
       descriptors_ref_.push_back(descriptors_curr_.row(i));
       keypoints_ref_.push_back(keypoints_curr_[i]);
+      std::cout << "重设keypoint" << '\n';
       // 这里只保留了成功计算深度的点到ref中
+      // 为了同步keypoints 在这里也把keypoints重新进行筛选
     }
   }
 }
