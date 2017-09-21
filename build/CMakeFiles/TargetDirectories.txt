@@ -1,3 +1,0 @@
-/home/carpon/VIE_SLAM/build/test/CMakeFiles/run_vo.dir
-/home/carpon/VIE_SLAM/build/test/CMakeFiles/test.dir
-/home/carpon/VIE_SLAM/build/src/CMakeFiles/vie_slam.dir
