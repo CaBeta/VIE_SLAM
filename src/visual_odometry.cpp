@@ -91,7 +91,6 @@ void VisualOdometry::computeDescriptors(){
 
 void VisualOdometry::featureMatching(){
   // match desp_ref and desp_curr, use OpenCV's brute force match
-
   vector<cv::DMatch> matches;
   cv::BFMatcher matcher ( cv::NORM_HAMMING );
   matcher.match ( descriptors_ref_, descriptors_curr_, matches );
@@ -99,6 +98,7 @@ void VisualOdometry::featureMatching(){
   // GMS部分
   int num_inliers = 0;
 	std::vector<bool> vbInliers;
+  // 这里的keypoint和matches的descriptor对应不上的话会无法得到正确的筛选
 	gms_matcher gms(keypoints_ref_,ref_->color_.size(),
                   keypoints_curr_,curr_->color_.size(), matches);
 	num_inliers = gms.GetInlierMask(vbInliers, false, false);
@@ -158,6 +158,49 @@ void VisualOdometry::poseEstimationPnP(){
   T_curr_ref_estimated_ = SE3(
     SO3(rvec.at<double>(0,0), rvec.at<double>(1,0), rvec.at<double>(2,0)),
     Vector3d( tvec.at<double>(0,0), tvec.at<double>(1,0), tvec.at<double>(2,0))
+  );
+  // using bundle adjustment to optimize the pose
+  typedef g2o::BlockSolver<g2o::BlockSolverTraits<6,2>> Block;
+
+  Block::LinearSolverType* linearSolver = new g2o::LinearSolverDense<Block::PoseMatrixType>();
+  Block* solver_ptr = new Block( linearSolver );
+
+  g2o::OptimizationAlgorithmLevenberg* solver = new g2o::OptimizationAlgorithmLevenberg ( solver_ptr );
+  g2o::SparseOptimizer optimizer;
+
+  optimizer.setAlgorithm ( solver );
+
+  g2o::VertexSE3Expmap* pose = new g2o::VertexSE3Expmap();
+
+  pose->setId ( 0 );
+  pose->setEstimate ( g2o::SE3Quat (
+    T_c_r_estimated_.rotation_matrix(),
+    T_c_r_estimated_.translation()
+  ) );
+
+  optimizer.addVertex ( pose );
+
+  // edges
+  for ( int i=0; i<inliers.rows; i++ ) {
+    int index = inliers.at<int>(i,0);
+    // 3D -> 2D projection
+    EdgeProjectXYZ2UVPoseOnly* edge = new EdgeProjectXYZ2UVPoseOnly();
+    edge->setId(i);
+    edge->setVertex(0, pose);
+    edge->camera_ = curr_->camera_.get();
+    edge->point_ = Vector3d( pts3d[index].x, pts3d[index].y, pts3d[index].z );
+    edge->setMeasurement( Vector2d(pts2d[index].x, pts2d[index].y) );
+    edge->setInformation( Eigen::Matrix2d::Identity() );
+
+    optimizer.addEdge( edge );
+  }
+
+  optimizer.initializeOptimization();
+  optimizer.optimize(10);
+
+  T_curr_ref_estimated_ = SE3 (
+    pose->estimate().rotation(),
+    pose->estimate().translation()
   );
 }
 
