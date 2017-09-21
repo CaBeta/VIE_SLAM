@@ -5,6 +5,7 @@
 #include <boost/timer.hpp>
 
 #include "gms/old_gms.h"
+#include "vie_slam/g2o_types.h"
 #include "vie_slam/config.h"
 #include "vie_slam/visual_odometry.h"
 
@@ -174,8 +175,8 @@ void VisualOdometry::poseEstimationPnP(){
 
   pose->setId ( 0 );
   pose->setEstimate ( g2o::SE3Quat (
-    T_c_r_estimated_.rotation_matrix(),
-    T_c_r_estimated_.translation()
+    T_curr_ref_estimated_.rotation_matrix(),
+    T_curr_ref_estimated_.translation()
   ) );
 
   optimizer.addVertex ( pose );

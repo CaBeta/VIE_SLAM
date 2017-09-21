@@ -7,6 +7,7 @@ SET(CMAKE_DEPENDS_CHECK_CXX
   "/home/carpon/VIE_SLAM/src/camera.cpp" "/home/carpon/VIE_SLAM/build/src/CMakeFiles/vie_slam.dir/camera.cpp.o"
   "/home/carpon/VIE_SLAM/src/config.cpp" "/home/carpon/VIE_SLAM/build/src/CMakeFiles/vie_slam.dir/config.cpp.o"
   "/home/carpon/VIE_SLAM/src/frame.cpp" "/home/carpon/VIE_SLAM/build/src/CMakeFiles/vie_slam.dir/frame.cpp.o"
+  "/home/carpon/VIE_SLAM/src/g2o_types.cpp" "/home/carpon/VIE_SLAM/build/src/CMakeFiles/vie_slam.dir/g2o_types.cpp.o"
   "/home/carpon/VIE_SLAM/src/map.cpp" "/home/carpon/VIE_SLAM/build/src/CMakeFiles/vie_slam.dir/map.cpp.o"
   "/home/carpon/VIE_SLAM/src/mappoint.cpp" "/home/carpon/VIE_SLAM/build/src/CMakeFiles/vie_slam.dir/mappoint.cpp.o"
   "/home/carpon/VIE_SLAM/src/visual_odometry.cpp" "/home/carpon/VIE_SLAM/build/src/CMakeFiles/vie_slam.dir/visual_odometry.cpp.o"

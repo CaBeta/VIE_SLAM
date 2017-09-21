@@ -4,6 +4,7 @@ add_library( vie_slam SHARED
     map.cpp
     camera.cpp
     config.cpp
+    g2o_types.cpp
     visual_odometry.cpp
 )
 

@@ -60,6 +60,28 @@ vie_slam/common.h
 vie_slam/camera.h
 ../include/vie_slam/vie_slam/camera.h
 
+../include/vie_slam/g2o_types.h
+vie_slam/common.h
+../include/vie_slam/vie_slam/common.h
+vie_slam/camera.h
+../include/vie_slam/vie_slam/camera.h
+g2o/core/base_vertex.h
+-
+g2o/core/base_unary_edge.h
+-
+g2o/core/block_solver.h
+-
+g2o/core/optimization_algorithm_levenberg.h
+-
+g2o/types/sba/types_six_dof_expmap.h
+-
+g2o/solvers/dense/linear_solver_dense.h
+-
+g2o/core/robust_kernel.h
+-
+g2o/core/robust_kernel_impl.h
+-
+
 ../include/vie_slam/map.h
 vie_slam/common.h
 ../include/vie_slam/vie_slam/common.h
@@ -105,6 +127,8 @@ boost/timer.hpp
 -
 gms/old_gms.h
 /home/carpon/VIE_SLAM/src/gms/old_gms.h
+vie_slam/g2o_types.h
+/home/carpon/VIE_SLAM/src/vie_slam/g2o_types.h
 vie_slam/config.h
 /home/carpon/VIE_SLAM/src/vie_slam/config.h
 vie_slam/visual_odometry.h

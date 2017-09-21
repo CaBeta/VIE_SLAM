@@ -164,9 +164,32 @@ src/CMakeFiles/vie_slam.dir/config.cpp.o.provides: src/CMakeFiles/vie_slam.dir/c
 
 src/CMakeFiles/vie_slam.dir/config.cpp.o.provides.build: src/CMakeFiles/vie_slam.dir/config.cpp.o
 
+src/CMakeFiles/vie_slam.dir/g2o_types.cpp.o: src/CMakeFiles/vie_slam.dir/flags.make
+src/CMakeFiles/vie_slam.dir/g2o_types.cpp.o: ../src/g2o_types.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/carpon/VIE_SLAM/build/CMakeFiles $(CMAKE_PROGRESS_6)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object src/CMakeFiles/vie_slam.dir/g2o_types.cpp.o"
+	cd /home/carpon/VIE_SLAM/build/src && g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/vie_slam.dir/g2o_types.cpp.o -c /home/carpon/VIE_SLAM/src/g2o_types.cpp
+
+src/CMakeFiles/vie_slam.dir/g2o_types.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/vie_slam.dir/g2o_types.cpp.i"
+	cd /home/carpon/VIE_SLAM/build/src && g++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/carpon/VIE_SLAM/src/g2o_types.cpp > CMakeFiles/vie_slam.dir/g2o_types.cpp.i
+
+src/CMakeFiles/vie_slam.dir/g2o_types.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/vie_slam.dir/g2o_types.cpp.s"
+	cd /home/carpon/VIE_SLAM/build/src && g++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/carpon/VIE_SLAM/src/g2o_types.cpp -o CMakeFiles/vie_slam.dir/g2o_types.cpp.s
+
+src/CMakeFiles/vie_slam.dir/g2o_types.cpp.o.requires:
+.PHONY : src/CMakeFiles/vie_slam.dir/g2o_types.cpp.o.requires
+
+src/CMakeFiles/vie_slam.dir/g2o_types.cpp.o.provides: src/CMakeFiles/vie_slam.dir/g2o_types.cpp.o.requires
+	$(MAKE) -f src/CMakeFiles/vie_slam.dir/build.make src/CMakeFiles/vie_slam.dir/g2o_types.cpp.o.provides.build
+.PHONY : src/CMakeFiles/vie_slam.dir/g2o_types.cpp.o.provides
+
+src/CMakeFiles/vie_slam.dir/g2o_types.cpp.o.provides.build: src/CMakeFiles/vie_slam.dir/g2o_types.cpp.o
+
 src/CMakeFiles/vie_slam.dir/visual_odometry.cpp.o: src/CMakeFiles/vie_slam.dir/flags.make
 src/CMakeFiles/vie_slam.dir/visual_odometry.cpp.o: ../src/visual_odometry.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/carpon/VIE_SLAM/build/CMakeFiles $(CMAKE_PROGRESS_6)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/carpon/VIE_SLAM/build/CMakeFiles $(CMAKE_PROGRESS_7)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object src/CMakeFiles/vie_slam.dir/visual_odometry.cpp.o"
 	cd /home/carpon/VIE_SLAM/build/src && g++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/vie_slam.dir/visual_odometry.cpp.o -c /home/carpon/VIE_SLAM/src/visual_odometry.cpp
 
@@ -194,6 +217,7 @@ vie_slam_OBJECTS = \
 "CMakeFiles/vie_slam.dir/map.cpp.o" \
 "CMakeFiles/vie_slam.dir/camera.cpp.o" \
 "CMakeFiles/vie_slam.dir/config.cpp.o" \
+"CMakeFiles/vie_slam.dir/g2o_types.cpp.o" \
 "CMakeFiles/vie_slam.dir/visual_odometry.cpp.o"
 
 # External object files for target vie_slam
@@ -204,6 +228,7 @@ vie_slam_EXTERNAL_OBJECTS =
 ../lib/libvie_slam.so: src/CMakeFiles/vie_slam.dir/map.cpp.o
 ../lib/libvie_slam.so: src/CMakeFiles/vie_slam.dir/camera.cpp.o
 ../lib/libvie_slam.so: src/CMakeFiles/vie_slam.dir/config.cpp.o
+../lib/libvie_slam.so: src/CMakeFiles/vie_slam.dir/g2o_types.cpp.o
 ../lib/libvie_slam.so: src/CMakeFiles/vie_slam.dir/visual_odometry.cpp.o
 ../lib/libvie_slam.so: src/CMakeFiles/vie_slam.dir/build.make
 ../lib/libvie_slam.so: /home/carpon/opencv3/lib/libopencv_viz.so.3.1.0
@@ -246,6 +271,7 @@ src/CMakeFiles/vie_slam.dir/requires: src/CMakeFiles/vie_slam.dir/mappoint.cpp.o
 src/CMakeFiles/vie_slam.dir/requires: src/CMakeFiles/vie_slam.dir/map.cpp.o.requires
 src/CMakeFiles/vie_slam.dir/requires: src/CMakeFiles/vie_slam.dir/camera.cpp.o.requires
 src/CMakeFiles/vie_slam.dir/requires: src/CMakeFiles/vie_slam.dir/config.cpp.o.requires
+src/CMakeFiles/vie_slam.dir/requires: src/CMakeFiles/vie_slam.dir/g2o_types.cpp.o.requires
 src/CMakeFiles/vie_slam.dir/requires: src/CMakeFiles/vie_slam.dir/visual_odometry.cpp.o.requires
 .PHONY : src/CMakeFiles/vie_slam.dir/requires
 

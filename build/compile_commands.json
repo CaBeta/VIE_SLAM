@@ -26,6 +26,11 @@
 },
 {
   "directory": "/home/carpon/VIE_SLAM/build/src",
+  "command": "g++   -Dvie_slam_EXPORTS -std=c++11 -march=native -O3 -g -fPIC -I/usr/include/eigen3 -I/home/carpon/opencv3/include/opencv -I/home/carpon/opencv3/include -I/home/carpon/Sophus -I/usr/local/include/eigen3 -I/home/carpon/VIE_SLAM/include    -o CMakeFiles/vie_slam.dir/g2o_types.cpp.o -c /home/carpon/VIE_SLAM/src/g2o_types.cpp",
+  "file": "/home/carpon/VIE_SLAM/src/g2o_types.cpp"
+},
+{
+  "directory": "/home/carpon/VIE_SLAM/build/src",
   "command": "g++   -Dvie_slam_EXPORTS -std=c++11 -march=native -O3 -g -fPIC -I/usr/include/eigen3 -I/home/carpon/opencv3/include/opencv -I/home/carpon/opencv3/include -I/home/carpon/Sophus -I/usr/local/include/eigen3 -I/home/carpon/VIE_SLAM/include    -o CMakeFiles/vie_slam.dir/visual_odometry.cpp.o -c /home/carpon/VIE_SLAM/src/visual_odometry.cpp",
   "file": "/home/carpon/VIE_SLAM/src/visual_odometry.cpp"
 },

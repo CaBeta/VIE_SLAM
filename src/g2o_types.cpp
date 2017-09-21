@@ -86,7 +86,7 @@ void EdgeProjectXYZRGBDPoseOnly::linearizeOplus(){
 void EdgeProjectXYZ2UVPoseOnly::computeError(){
     const g2o::VertexSE3Expmap* pose = static_cast<const g2o::VertexSE3Expmap*> ( _vertices[0] );
 
-    _error = _measurement - camera_->camera2pixel (
+    _error = _measurement - camera_->Camera2Pixel (
       pose->estimate().map(point_)
     );
 }

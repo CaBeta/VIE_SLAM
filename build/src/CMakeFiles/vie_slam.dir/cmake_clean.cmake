@@ -4,6 +4,7 @@ FILE(REMOVE_RECURSE
   "CMakeFiles/vie_slam.dir/map.cpp.o"
   "CMakeFiles/vie_slam.dir/camera.cpp.o"
   "CMakeFiles/vie_slam.dir/config.cpp.o"
+  "CMakeFiles/vie_slam.dir/g2o_types.cpp.o"
   "CMakeFiles/vie_slam.dir/visual_odometry.cpp.o"
   "../../lib/libvie_slam.pdb"
   "../../lib/libvie_slam.so"
